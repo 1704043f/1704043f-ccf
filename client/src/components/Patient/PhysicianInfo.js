@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProviderInfo } from '../../actions/PatientAction';
@@ -49,34 +49,34 @@ const styles = theme => ({
         hover: {},
     },
     card: {
-    maxWidth: 400,
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
-  },
-  actions: {
-    display: 'flex',
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-    marginLeft: 'auto',
-    [theme.breakpoints.up('sm')]: {
-      marginRight: -8,
+        maxWidth: '100%',
     },
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
-  avatar: {
-    backgroundColor: red[500],
-  },
+    media: {
+        height: 0,
+        paddingTop: '56.25%', // 16:9
+    },
+    actions: {
+        display: 'flex',
+    },
+    expand: {
+        transform: 'rotate(0deg)',
+        transition: theme.transitions.create('transform', {
+        duration: theme.transitions.duration.shortest,
+        }),
+        marginLeft: 'auto',
+        [theme.breakpoints.up('sm')]: {
+        marginRight: -8,
+        },
+    },
+    expandOpen: {
+        transform: 'rotate(180deg)',
+    },
+    avatar: {
+        backgroundColor: red[500],
+    },
 });
 
-class PhysicianInfo extends Component {  
+class PhysicianInfo extends Component {
     componentDidMount(){
         this.props.fetchProviderInfo();
     }
@@ -94,13 +94,13 @@ class PhysicianInfo extends Component {
         return (
                 <div>
                 <h1>My Provider Details</h1>
-                    
+
 
                     <Card className={classes.card}>
                         <CardHeader
                         avatar={
                             <Avatar aria-label="Recipe" className={classes.avatar}>
-                                {physicianInfo && physicianInfo.firstname && physicianInfo.lastname ? physicianInfo.firstname.substring(0 , 1) + physicianInfo.lastname.substring(0, 1) : null} 
+                                {physicianInfo && physicianInfo.firstname && physicianInfo.lastname ? physicianInfo.firstname.substring(0 , 1) + physicianInfo.lastname.substring(0, 1) : null}
                             </Avatar>
                         }
                         action={
@@ -108,7 +108,7 @@ class PhysicianInfo extends Component {
                             <MoreVertIcon />
                             </IconButton>
                         }
-                        title={physicianInfo && physicianInfo.firstname && physicianInfo.lastname ? physicianInfo.firstname + " " + physicianInfo.lastname : null} 
+                        title={physicianInfo && physicianInfo.firstname && physicianInfo.lastname ? physicianInfo.firstname + " " + physicianInfo.lastname : null}
                         subheader={physicianInfo && physicianInfo.role ? physicianInfo.role : null }
                         />
                         <CardContent>
@@ -127,14 +127,14 @@ class PhysicianInfo extends Component {
                                     <ListItemIcon>
                                         <ExploreIcon />
                                     </ListItemIcon>
-                                    <ListItemText primary= {physicianInfo && 
-                                                            physicianInfo.office && 
-                                                            physicianInfo.office.address1 
-                                                            ?  physicianInfo.office.address1 : null } 
+                                    <ListItemText primary= {physicianInfo &&
+                                                            physicianInfo.office &&
+                                                            physicianInfo.office.address1
+                                                            ?  physicianInfo.office.address1 : null }
                                                 secondary= {
-                                                    physicianInfo && 
-                                                    physicianInfo.office 
-                                                    ? physicianInfo.office.address2  + " " + physicianInfo.office.state + " " + physicianInfo.office.zip : null 
+                                                    physicianInfo &&
+                                                    physicianInfo.office
+                                                    ? physicianInfo.office.address2  + " " + physicianInfo.office.state + " " + physicianInfo.office.zip : null
 
                                                 }
                                     />
@@ -149,9 +149,9 @@ class PhysicianInfo extends Component {
                                     <ListItemText primary={physicianInfo &&
                                                            physicianInfo.phone &&
                                                            physicianInfo.phone[0].phone1 ?
-                                                            physicianInfo.phone[0].phone1.number : null} 
+                                                            physicianInfo.phone[0].phone1.number : null}
                                                 secondary={physicianInfo &&
-                                                            physicianInfo.phone && 
+                                                            physicianInfo.phone &&
                                                             physicianInfo.phone[0].phone1.phone ?
                                                             physicianInfo.phone[0].phone1.phone: null} />
                                 </ListItem>
@@ -175,4 +175,6 @@ function mapStatToProps(state){
     return (state);
 }
 
+PhysicianInfo = withStyles(styles)(PhysicianInfo);
+PhysicianInfo = withRouter(PhysicianInfo);
 export default connect(mapStatToProps, mapDispatchToProps) (PhysicianInfo)

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
@@ -9,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
-import { fetchQuestions } from '../../actions/PatientAction';
+import { fetchQuestions, fetchPatientData } from '../../actions/PatientAction';
 import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -17,8 +19,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import PatientConsoleRoutes from './PatientConsoleRoutes';
+import PatientTabs from './Tabs';
 import _ from 'lodash';
-
 
 import { patientListItems, patientDashboardListItem } from "./ConsoleMenuListItems"
 import { Drawer } from '@material-ui/core';
@@ -65,10 +67,11 @@ const styles = theme => ({
 
     content: {
         flexGrow: 1,
+        marginTop : '80px',
         backgroundColor: theme.palette.background.default,
         padding: theme.spacing.unit * 3,
     },
-    
+
     flex: {
         flexGrow: 1,
     },
@@ -91,7 +94,10 @@ const styles = theme => ({
         margin: `${theme.spacing.unit}px 0`,
     },
     consoleTitle : {
-        display : "block",
+        display : "flex",
+    },
+    menuButton : {
+
     }
 });
 
@@ -104,6 +110,7 @@ class PatientConsole extends Component {
     };
     componentWillMount() {
         this.props.fetchQuestions();
+        this.props.fetchPatientData();
     }
     handleDrawerToggle = () => {
         this.setState(state => ({
@@ -128,7 +135,7 @@ class PatientConsole extends Component {
             <div className={classes.root}>
                 <AppBar className={classes.appBar}>
                     <Toolbar>
-                        <IconButton 
+                        <IconButton
                             color="darkGrey"
                             aria-label="Open Drawer"
                             onClick = {this.handleDrawerToggle}
@@ -143,10 +150,10 @@ class PatientConsole extends Component {
                         variant="temporary"
                         open={this.state.mobileOpen}
                         onClick={this.toggleDrawer('left', true)}
-                        classes = {{ 
+                        classes = {{
                             paper: classes.drawerPaper,
                         }}
-                        
+
                     >
                         {drawer}
                     </Drawer>
@@ -163,21 +170,22 @@ class PatientConsole extends Component {
                             {drawer}
                         </div>
                     </Drawer>
-                    
+
                 </Hidden>
                 <main className={classes.content}>
                     {auth.isAuthenticated && auth.profile.name ?
-                        <div className={classes.consoleTitle}>
-                            <Typography variant="title" noWrap>
-                                Welcome {auth.profile.name}
-                                <Button onClick={this.toggleDrawer('left', true)}>Menu</Button>
-                            </Typography>
+                        <div>
+                            <div className={classes.consoleTitle}>
+                                <h1>Welcome {auth.profile.name}</h1>
+                            </div>
+                            <div>
+                                <PatientTabs />
+                            </div>
+
                         </div>
                         : null
                     }
-                    <PatientConsoleRoutes {...this.props} />
-                    
-                    
+
                 </main>
 
             </div>
@@ -193,4 +201,6 @@ const mapStateToProps = state => {
     return state;
 }
 
-export default connect(mapStateToProps, { fetchQuestions })(withStyles(styles)(PatientConsole))
+PatientConsole = connect(mapStateToProps, { fetchQuestions, fetchPatientData})(PatientConsole);
+PatientConsole = withRouter(PatientConsole);
+export default withStyles(styles)(PatientConsole);

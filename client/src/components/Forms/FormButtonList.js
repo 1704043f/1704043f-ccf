@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Field } from 'redux-form';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import lime from '@material-ui/core/colors/lime';
 import green from '@material-ui/core/colors/green';
@@ -16,20 +17,29 @@ const styles = theme => ({
         maxWidth: 360,
         backgroundColor: theme.palette.background.paper,
     },
-    button3: {
-        backgroundColor: red[500],
+    button0 : {
+        backgroundColor : green[500],
         width: '100%',
-        borderWith: '5px',
+        margin: '5px',
+        borderWidth: '1px',
         maxWidth: 360,
         '&:hover': {
-            backgroundColor: red[700],
+            backgroundColor: green[700],
             borderColor: '#0062cc',
         },
+        '&:focus': {
+            boxShadow: 'none',
+            backgroundColor: green[900],
+            borderColor: '#000000',
+            borderStyle: 'solid',
+            borderWidth: '2px'
+        },
     },
-    button1 : {
-        backgroundColor : lime[500],
+    button1: {
+        backgroundColor: lime[500],
         width: '100%',
-        borderWith: '5px',
+        margin: '5px',
+        borderWidth: '1px',
         maxWidth: 360,
         '&:hover': {
             backgroundColor: lime[700],
@@ -39,40 +49,69 @@ const styles = theme => ({
             boxShadow: 'none',
             backgroundColor: lime[900],
             borderColor: '#000000',
-            borderStyle : 'solid',
-            borderWidth : '5px'
-        },
-    },
-    button0 : {
-        backgroundColor : green[500],
-        width: '100%',
-        borderWith: '5px',
-        maxWidth: 360,
-        '&:hover': {
-            backgroundColor: green[700],
-            borderColor: '#0062cc',
+            borderStyle: 'solid',
+            borderWidth: '2px'
         },
     },
     button2: {
         backgroundColor: amber[500],
         width: '100%',
-        borderWith: '5px',
+        margin: '5px',
+        borderWidth: '5px',
         maxWidth: 360,
         '&:hover': {
             backgroundColor: amber[700],
             borderColor: '#0062cc',
         },
+        '&:focus': {
+            boxShadow: 'none',
+            backgroundColor: amber[900],
+            borderColor: '#000000',
+            borderStyle: 'solid',
+            borderWidth: '2px'
+        },
+    },
+    button3: {
+        backgroundColor: red[500],
+        width: '100%',
+        margin: '5px',
+        borderWidth: '5px',
+        maxWidth: 360,
+        '&:hover': {
+            backgroundColor: red[700],
+            borderColor: '#0062cc',
+        },
+        '&:focus': {
+            boxShadow: 'none',
+            backgroundColor: red[900],
+            borderColor: '#000000',
+            borderStyle: 'solid',
+            borderWidth: '2px'
+        },
     },
     button4: {
         backgroundColor: grey[500],
         width: '100%',
-        borderWith: '5px',
+        margin: '5px',
+        borderWidth: '5px',
         maxWidth: 360,
         '&:hover': {
             backgroundColor: grey[700],
             borderColor: '#0062cc',
         },
+        '&:focus': {
+            boxShadow: 'none',
+            backgroundColor: grey[900],
+            borderColor: '#000000',
+            borderStyle: 'solid',
+            borderWidth: '2px'
+        },
     },
+    checkItem : {
+        display : 'grid',
+        alignContent : 'center',
+        textAlign : '-webkit-center',
+    }
 });
 
 class ButtonList extends Component {
@@ -84,11 +123,17 @@ class ButtonList extends Component {
                 <h3>{question} : </h3>
                 {items.map((item, index) => {
                     return(
-                        <div>
-                            <Button key={item.label} variant="contained" type="button" className={ index === 0 ? classes.button0: [index === 1 ? classes.button1 : [index === 2 ? classes.button2 : [index === 3 ? classes.button3 : index === 4 ? classes.button4 : null]]]} onClick={() => onChange(item.value)}>{item.label}</Button>
-                            {value === item.value ? <DoneIcon /> : null}
-                        </div>
-                        
+                        <Grid container>
+                            <Grid item md={10} lg={10} xs={10}>
+                                <Button key={item.label} variant="contained" type="button" className={ index === 0 ? classes.button0:
+                                    [index === 1 ? classes.button1 : [index === 2 ? classes.button2 : [index === 3 ? classes.button3 :
+                                        index === 4 ? classes.button4 : null]]]} onClick={() => onChange(item.value)}>{item.label}</Button>
+                            </Grid>
+                            <Grid item md={1} lg={1} xs={1} className={classes.checkItem}>
+                                {value === item.value ? <DoneIcon /> : null}
+                            </Grid>
+                        </Grid>
+
                     )
                 })
                 }

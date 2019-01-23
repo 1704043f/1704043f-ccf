@@ -2,7 +2,7 @@ const db = require("../models");
 const mongoose = require('mongoose');
 
 
-module.exports = { 
+module.exports = {
 
     // Fetch all provider names and _ids (to populate listmenu)
     findAll: function(req, res) {
@@ -33,7 +33,7 @@ module.exports = {
         //if(req.user){
             db.Provider
             .find( {
-                provider_group_id: req.params.id}, 
+                provider_group_id: req.params.id},
                 {firstname: 1, lastname: 1, _id: 1, office: 1, role: 1} )
             .sort( {"lastname": 1} )
             .then(providerList => {
@@ -49,13 +49,14 @@ module.exports = {
         // }else{
         //     res.status(422).json('You do not have proper credential to perform this action.')
         // }
-        
-    }, 
+
+    },
 
 
     // Fetch provider details by id
     // To be sent req.params.id with _id of provider to be fetched
     findById: function(req, res) {
+        console.log("params in provider controller : " , req.params);
         console.log("Provider controller called to 'findOne'" +req.params.id);
         // if(req.user) {
             db.Provider
@@ -94,7 +95,7 @@ module.exports = {
         //     res.status(422).json('You do not have proper credential to perform this action.')
         // }
     },
-   
+
 
     // Remove a provider
     // To be sent req.params.id of resultto be deleted
@@ -116,7 +117,7 @@ module.exports = {
         // }
     },
 
-    
+
     // Update a providers details
     // To be sent req.params.id of provider to be updated & req.body object of provider's new details
     update: function(req, res) {

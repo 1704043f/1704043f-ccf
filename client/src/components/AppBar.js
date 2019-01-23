@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { startCase } from 'lodash';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 // import { bindActionCreators } from 'redux';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -17,15 +17,15 @@ const styles = theme =>({
     root: {
         flexGrow: 1,
         width: 'auto'
-    }, 
+    },
     layout: {
         width: 'auto',
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
             [theme.breakpoints.up(1280 + theme.spacing.unit * 3 * 2)]: {
-            maxWidth: 1280,
-                marginLeft: theme.spacing.unit * 3,
-                marginRight: theme.spacing.unit * 3,
+            //maxWidth: 1280,
+                //marginLeft: theme.spacing.unit * 3,
+                //marginRight: theme.spacing.unit * 3,
             }
     },
     flex: {
@@ -46,7 +46,7 @@ const styles = theme =>({
     },
 });
 
-class TopBar extends Component {  
+class TopBar extends Component {
     state = {
         redirect : false,
     }
@@ -56,9 +56,12 @@ class TopBar extends Component {
     };
 
     handleLogoutClick = () => {
-        this.props.logoutSuccess();
-        AuthService.logout(); // careful, this is a static method
-        this.setState({redirect : true});
+
+        setTimeout(() => {
+            this.props.logoutSuccess();
+            AuthService.logout(); // careful, this is a static method
+        }, (1500));
+        this.props.history.push('/');
     };
 
     renderProfile(profile, isAuthenticated) {
@@ -70,7 +73,7 @@ class TopBar extends Component {
     }
 
     render () {
-        
+
         const { isAuthenticated, profile } = this.props.auth;
         const { classes } = this.props;
         const { redirect } = this.state;
@@ -81,7 +84,7 @@ class TopBar extends Component {
         return (
                 <div className={isAuthenticated ? classes.root : classes.layout}>
 
-                    <AppBar position="static" className={isAuthenticated ? null : classes.loseShadow}>
+                    <AppBar className={isAuthenticated ? null : classes.loseShadow}>
                         <ToolBar style={{backgroundColor: "#2d404b" }}>
                             <Typography variant="display1" color="inherit" align="left" className={classes.flex}>
                                 Engage-Yu!
@@ -97,7 +100,7 @@ class TopBar extends Component {
 
                             <Button color="inherit" className={classes.menuButton}>Help</Button>
 
-                            {!isAuthenticated ? 
+                            {!isAuthenticated ?
                                 ( <Button color="inherit" className={classes.menuButton} onClick={this.handleLoginClick}>Login</Button> )
                                 :
                                 ( <Button color="inherit" className={classes.menuButton} onClick={this.handleLogoutClick}>Logout</Button> )
@@ -131,4 +134,5 @@ const mapDispatchToProps = dispatch => ({
     logoutSuccess: () => dispatch(authActions.logoutSuccess())
 });
 
+TopBar = withRouter(TopBar);
 export default connect(mapStateToProps, mapDispatchToProps,null, {pure:false}) (withStyles(styles) (TopBar));

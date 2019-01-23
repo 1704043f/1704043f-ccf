@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Console from '../Patient/Console';
 import Appbar from '../AppBar';
@@ -25,18 +26,18 @@ const styles = theme => ({
 });
 
 class SKBranch extends Component {
-    
+
     render () {
         return(
             <div>
                 <Appbar/>
-                <Console {...this.props } title={this.props.title} />
+                <Console/>
             </div>
 
         );
-        
+
     }
 }
 
-
+SKBranch = withRouter(SKBranch);
 export default withStyles(styles)(SKBranch);
